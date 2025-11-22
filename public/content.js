@@ -2,7 +2,7 @@ document.addEventListener("mouseup", handleSelection);
 document.addEventListener("keyup", handleSelection);
 
 function handleSelection() {
-    const selected = window.getSelection().toString.trim();
+    const selected = window.getSelection().toString().trim();
     if (!selected) return;
 
     const snippet = {
@@ -10,10 +10,12 @@ function handleSelection() {
         url: window.location.href,
         title: document.title,
         timestamp: Date.now()
-    }
+    };
 
     chrome.runtime.sendMessage({
         type: "SNIPPET_CAPTURED",
         payload: snippet
     });
-};
+
+    console.log("Snippet sent from contentScript:", snippet);
+}

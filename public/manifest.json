@@ -4,14 +4,15 @@
     "manifest_version": 3,
     "version": "1.0.0",
     "icons": {
-        "16": "icons/icon16.png",
-        "48": "icons/icon48.png",
-        "128": "icons/icon128.png"
+        "16": "icons/icon16.jpg",
+        "48": "icons/icon48.jpg",
+        "128": "icons/icon128.jpg"
     },
     "permissions": [
         "activeTab",
         "scripting",
-        "storage"
+        "storage",
+        "contextMenus"
     ],
     "host_permissions": [
         "<all_urls>"
@@ -32,11 +33,11 @@
     ],
     "action": {
         "default_title": "SnipNote",
-        "default_popup": "src/popup/popup.html",
+        "default_popup": "src/popup.html",
         "default_icon": {
-            "16": "icons/icon16.png",
-            "48": "icons/icon48.png",
-            "128": "icons/icon128.png"
+            "16": "icons/icon16.jpg",
+            "48": "icons/icon48.jpg",
+            "128": "icons/icon128.jpg"
         }
     }
 }
