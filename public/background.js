@@ -10,17 +10,22 @@ chrome.runtime.onInstalled.addListener(() => {
 // listen for context menu clicked
 chrome.contextMenus.onClicked.addListener((info, tab) => {
     if (info.menuItemId === "saveSnippet") {
-        chrome.tabs.sendMessage(tab.id, { type: "REQUEST_SNIPPET" }, (snippet) => {
-            if (chrome.runtime.lastError) {
-                console.log("Error sending request to content script:", chrome.runtime.lastError);
-                return;
-            }
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            if (!tabs[0]) return;
 
-            if (snippet && snippet.text) {
-                saveSnippet(snippet);
-                console.log("Snippet recieved & saved:", snippet);
-            }
+            chrome.tabs.sendMessage(
+                tabs[0].id,
+                { type: "REQUEST_SNIPPET" },
+                (response) => {
+                    if (chrome.runtime.lastError) {
+                        console.log("No content script found:", chrome.runtime.lastError.message);
+                        return;
+                    }
+                    console.log("Received:", response);
+                }
+            );
         });
+
     }
 });
 
@@ -30,13 +35,13 @@ function saveSnippet(snippet) {
         const existing = result.snippets || [];
         const updated = [snippet, ...existing];
 
-        chrome.storage.local.set({ snippet: updated }, () => {
+        chrome.storage.local.set({ snippets: updated }, () => {
             console.log("Snippets saved", updated);
         });
     });
 }
 
-// listen from conten script
+// listen for direct broadcast messages from content script
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === "SNIPPET_CAPTURED") {
         saveSnippet(message.payload);

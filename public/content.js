@@ -1,3 +1,5 @@
+console.log("SnipNote content script ACTIVE");
+
 document.addEventListener("mouseup", handleSelection);
 document.addEventListener("keyup", handleSelection);
 
